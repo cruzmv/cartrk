@@ -42,6 +42,8 @@ $app->post('/create', function() use($app) {
   $content = trim(file_get_contents("php://input"));
   $decoded = json_decode($content, true);
   
+
+  
   return json_encode($decoded);
 });
 
@@ -61,13 +63,13 @@ $app->get('/read', function() use($app) {
 
 // Update
 $app->post('/create', function() use($app) {
-  $app.header('Content-Type:application/json;charset=utf-8');
-
-
+  
   $content = trim(file_get_contents("php://input"));
   $decoded = json_decode($content, true);
   
   return json_encode($decoded);
+
+
 });
 
 
