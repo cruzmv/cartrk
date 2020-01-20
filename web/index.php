@@ -4,12 +4,12 @@ header('Content-type:application/json;charset=utf-8');
 require('../vendor/autoload.php');
 
 $app = new Silex\Application();
-//$app['debug'] = true;
+$app['debug'] = true;
 
 // Register the monolog logging service
-//$app->register(new Silex\Provider\MonologServiceProvider(), array(
-//  'monolog.logfile' => 'php://stderr',
-//));
+$app->register(new Silex\Provider\MonologServiceProvider(), array(
+  'monolog.logfile' => 'php://stderr',
+));
 
 // Register view rendering
 //$app->register(new Silex\Provider\TwigServiceProvider(), array(
@@ -37,16 +37,15 @@ $app->get('/', function() use($app) {
   return 'nada aqui';
 });
 
-
+// Create
 $app->post('/create', function() use($app) {
   $content = trim(file_get_contents("php://input"));
-
-  //Attempt to decode the incoming RAW post data from JSON.
   $decoded = json_decode($content, true);
   
   return json_encode($decoded);
 });
 
+// Read
 $app->get('/read', function() use($app) {
   $st = $app['pdo']->prepare('SELECT first_name FROM employees');
   $st->execute();
@@ -57,6 +56,27 @@ $app->get('/read', function() use($app) {
     $names[] = $row;
   }
   return json_encode($names);
+});
+
+
+// Update
+$app->post('/create', function() use($app) {
+  $app.header('Content-type:application/json;charset=utf-8');
+
+
+  $content = trim(file_get_contents("php://input"));
+  $decoded = json_decode($content, true);
+  
+  return json_encode($decoded);
+});
+
+
+// Delete
+$app->post('/delete', function() use($app) {
+  $content = trim(file_get_contents("php://input"));
+  $decoded = json_decode($content, true);
+  
+  return json_encode($decoded);
 });
 
 
