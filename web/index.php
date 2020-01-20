@@ -49,5 +49,10 @@ $app->get('/db/', function() use($app) {
   ));
 });
 
+$app->post('/tp/', function() use($app) {
+  return 'teste post';
+});
+
+
 
 $app->run();
