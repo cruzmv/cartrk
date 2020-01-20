@@ -31,11 +31,17 @@ $app->register(new Csanquer\Silex\PdoServiceProvider\Provider\PDOServiceProvider
 
 // Our web handlers
 $app->get('/', function() use($app) {
-  $app['monolog']->addDebug('logging output.');
-  return $app['twig']->render('index.twig');
+  //$app['monolog']->addDebug('logging output.');
+  //return $app['twig']->render('index.twig');
+  return 'nada aqui';
 });
 
-$app->get('/db/', function() use($app) {
+
+$app->post('/create', function() use($app) {
+  return 'teste post create';
+});
+
+$app->get('/read', function() use($app) {
   $st = $app['pdo']->prepare('SELECT first_name FROM employees');
   $st->execute();
 
@@ -44,14 +50,9 @@ $app->get('/db/', function() use($app) {
     $app['monolog']->addDebug('Row ' . $row['first_name']);
     $names[] = $row;
   }
-  return $app['twig']->render('database.twig', array(
-    'names' => $names
-  ));
+  return json_encode($names);
 });
 
-$app->post('/tp', function() use($app) {
-  return 'teste post';
-});
 
 
 
