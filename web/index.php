@@ -1,19 +1,20 @@
 <?php
+header('Content-type:application/json;charset=utf-8');
 
 require('../vendor/autoload.php');
 
 $app = new Silex\Application();
-$app['debug'] = true;
+//$app['debug'] = true;
 
 // Register the monolog logging service
-$app->register(new Silex\Provider\MonologServiceProvider(), array(
-  'monolog.logfile' => 'php://stderr',
-));
+//$app->register(new Silex\Provider\MonologServiceProvider(), array(
+//  'monolog.logfile' => 'php://stderr',
+//));
 
 // Register view rendering
-$app->register(new Silex\Provider\TwigServiceProvider(), array(
-    'twig.path' => __DIR__.'/views',
-));
+//$app->register(new Silex\Provider\TwigServiceProvider(), array(
+//    'twig.path' => __DIR__.'/views',
+//));
 
 $dbopts = parse_url(getenv('DATABASE_URL2'));
 $app->register(new Csanquer\Silex\PdoServiceProvider\Provider\PDOServiceProvider('pdo'),
@@ -38,7 +39,12 @@ $app->get('/', function() use($app) {
 
 
 $app->post('/create', function() use($app) {
-  return 'teste post create';
+  $content = trim(file_get_contents("php://input"));
+
+  //Attempt to decode the incoming RAW post data from JSON.
+  $decoded = json_decode($content, true);
+  
+  return json_encode($decoded);
 });
 
 $app->get('/read', function() use($app) {
