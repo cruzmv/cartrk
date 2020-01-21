@@ -54,19 +54,17 @@ $app->post('/create', function() use($app) {
   $phone         = $decoded['phone'];
   $fax           = $decoded['fax'];
 
-echo $customer_id;
-
-  $st = $app['pdo']->prepare("insert into customers(customer_id,company_name,contact_name,contact_title,city,region,postal_code,country,phone,fax,) 
-                                             values('".$customer_id."',
-                                                    '".$company_name."',
-                                                    '".$contact_name."',
-                                                    '".$contact_title."',
-                                                    '".$city."',
-                                                    '".$region."',
-                                                    '".$postal_code."',
-                                                    '".$country."',
-                                                    '".$phone."',
-                                                    '".$fax."') ");
+$st = $app['pdo']->prepare("insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
+                                           values('".$customer_id."',
+                                                  '".$company_name."',
+                                                  '".$contact_name."',
+                                                  '".$contact_title."',
+                                                  '".$city."',
+                                                  '".$region."',
+                                                  '".$postal_code."',
+                                                  '".$country."',
+                                                  '".$phone."',
+                                                  '".$fax."') ");
   $st->execute();
 
   return json_encode($decoded);
