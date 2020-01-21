@@ -30,7 +30,10 @@ $app->register(new Csanquer\Silex\PdoServiceProvider\Provider\PDOServiceProvider
                )
 );
 
-// Our web handlers
+$content = trim(file_get_contents("php://input"));
+$decoded = json_decode($content, true);
+
+// web handlers
 $app->get('/', function() use($app) {
   //$app['monolog']->addDebug('logging output.');
   //return $app['twig']->render('index.twig');
@@ -39,9 +42,6 @@ $app->get('/', function() use($app) {
 
 // Create
 $app->post('/create', function() use($app) {
-  $content = trim(file_get_contents("php://input"));
-  $decoded = json_decode($content, true);
-  
   $customer_id   = $decoded['customer_id'];
   $company_name  = $decoded['company_name'];
   $contact_name  = $decoded['contact_name'];
@@ -52,6 +52,8 @@ $app->post('/create', function() use($app) {
   $country       = $decoded['country'];
   $phone         = $decoded['phone'];
   $fax           = $decoded['fax'];
+
+  return json_encode($decoded);  
 
   $st = $app['pdo']->prepare('insert into customers(customer_id,company_name,contact_name,contact_title,city,region,postal_code,country,phone,fax,) 
                                              values('.$customer_id.',
