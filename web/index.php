@@ -55,7 +55,7 @@ $app->post('/create', function() use($app) {
   $fax           = $decoded['fax'];
 
 echo $customer_id;
-  $st = $app['pdo']->prepare('insert into customers(customer_id) values('.$customer_id.')');
+  $st = $app['pdo']->prepare("insert into customers(customer_id) values('teste')");
   //return json_encode($decoded);  
 
   /*
