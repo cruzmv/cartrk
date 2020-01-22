@@ -97,10 +97,45 @@ function execSQL($app,$cSQL){
 }
 
 // web handlers
-$app->get('/', function() use($app) {
+$app->put('/', function() use($app) {
   //$app['monolog']->addDebug('logging output.');
   //return $app['twig']->render('index.twig');
-  return 'nada aqui';
+  // Get the raw
+  $content = trim(file_get_contents("php://input"));
+  $aValid = validaDados($content);
+
+  // Validate the data
+  if (!$aValid['status']){    
+    return $aValid['msg'];
+  }
+
+  // Check if customer ID exists
+  $aSQL = execSQL($app,"select count(*) as count from customers where customer_id = '".$aValid['data']['customer_id']."'");
+  if (!$aSQL['status']){
+    return $aSQL['msg'];
+  } 
+  if ($aSQL['data'][0]['count']>0){
+    return 'Customer ID '.$aValid['data']['customer_id'].' alread exists.';
+  }
+
+  // Add the new customer
+  $aSQL = execSQL($app,"insert into customers(customer_id,company_name,contact_name,contact_title,address,city,region,postal_code,country,phone,fax) 
+                                values('".$aValid['data']['customer_id']."',
+                                       '".$aValid['data']['company_name']."',
+                                       '".$aValid['data']['contact_name']."',
+                                       '".$aValid['data']['contact_title']."',
+                                       '".$aValid['data']['address']."',
+                                       '".$aValid['data']['city']."',
+                                       '".$aValid['data']['region']."',
+                                       '".$aValid['data']['postal_code']."',
+                                       '".$aValid['data']['country']."',
+                                       '".$aValid['data']['phone']."',
+                                       '".$aValid['data']['fax']."') ");
+  if (!$aSQL['status']){ 
+    return $aSQL['msg'];
+  }
+
+  return 'Customer add succefully';  
 });
 
 
