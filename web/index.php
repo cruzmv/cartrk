@@ -32,21 +32,15 @@ $app->register(new Csanquer\Silex\PdoServiceProvider\Provider\PDOServiceProvider
 
 
 function execSQL($cSQL){
-  echo $cSQL;
-
-  /*
-  $lRet = false;
   try{
     $app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $st = $app['pdo']->prepare($cSQL); 
-    $lRet = $st->execute();
+    $st->execute();
   } catch (PDOException $exception) {
       echo 'PDOException: '.$exception;
   } catch (Exception $exception) {
       echo 'Exception: '.$exception;
   }
-  return $lRet;
-  */
 };
 
 
