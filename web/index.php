@@ -118,9 +118,6 @@ $app->post('/create', function() use($app) {
   if (!$aSQL['status']){
     return $aSQL['msg'];
   } 
-
-echo $aSQL['data'][0]['count'];
-
   if ($aSQL['data'][0]['count']>0){
     return 'Customer ID '.$aValid['data']['customer_id'].' alread exists.';
   }
@@ -169,14 +166,38 @@ $app->get('/read', function() use($app) {
 
 
 // Update
-$app->post('/create', function() use($app) {
+$app->post('/update', function() use($app) {
   
   $content = trim(file_get_contents("php://input"));
-  $decoded = json_decode($content, true);
+  $aValid = validaDados($content);
+
+  // Check if customer ID exists
+  $aSQL = execSQL($app,"select count(*) as count from customers where customer_id = '".$aValid['data']['customer_id']."'");
+  if (!$aSQL['status']){
+    return $aSQL['msg'];
+  } 
+  if ($aSQL['data'][0]['count']<=0){
+    return 'Customer ID '.$aValid['data']['customer_id'].' does not exists.';
+  }
   
-  return json_encode($decoded);
-
-
+  // update the customer data
+  $aSQL = execSQL($app,"update customers 
+                           set company_name = '".$aValid['data']['company_name']."',
+                               contact_name = '".$aValid['data']['contact_name']."',
+                               contact_title = '".$aValid['data']['contact_title']."',
+                               address = '".$aValid['data']['address']."',
+                               city = '".$aValid['data']['city']."',
+                               region = '".$aValid['data']['region']."',
+                               postal_code = '".$aValid['data']['postal_code']."',
+                               country = '".$aValid['data']['country']."',
+                               phone = '".$aValid['data']['phone']."',
+                               fax = '".$aValid['data']['fax']."' 
+                        where customer_id = '".$aValid['data']['customer_id']."'");
+  if (!$aSQL['status']){
+    return $aSQL['msg'];
+  } 
+  
+  return 'Customer update succefully.'; 
 });
 
 
