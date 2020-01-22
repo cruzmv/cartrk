@@ -134,14 +134,6 @@ $app->post('/delete', function() use($app) {
 });
 
 
-
-
-$app->run();
-
-
-
-
-
 function execSQL($cSQL){
   $lRet = false;
   try{
@@ -154,4 +146,11 @@ function execSQL($cSQL){
       echo 'Exception: '.$exception;
   }
   return $lRet;
-}
+};
+
+$app->run();
+
+
+
+
+
