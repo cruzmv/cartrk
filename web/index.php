@@ -119,7 +119,7 @@ $app->post('/create', function() use($app) {
     return $aSQL['msg'];
   } 
 
-echo json_encode(aSQL['data']).' --> ';  
+echo json_encode($aSQL['data']).' --> ';  
 echo json_encode($aSQL)  ;
 
 
