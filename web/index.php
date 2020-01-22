@@ -99,24 +99,25 @@ function execSQL($app,$cSQL){
 // Create
 $app->put('/', function() use($app) {
 
-  $aRet = array();
-
   // Get the raw
   $content = trim(file_get_contents("php://input"));
 
   // Validate the data
   $aValid = validaDados($content);
   if (!$aValid['status']){
-    return $aValid['msg'];
+    return json_encode($aValid);
   }
 
   // Check if customer ID exists
   $aSQL = execSQL($app,"select count(*) as count from customers where customer_id = '".$aValid['data']['customer_id']."'");
   if (!$aSQL['status']){
-    return $aSQL['msg'];
+    return json_encode($aSQL);
   }
   if ($aSQL['data'][0]['count']>0){
-    return 'Customer ID '.$aValid['data']['customer_id'].' alread exists.';
+    $aRet = array();
+    $aRet['status'] = false;
+    $aRet['msg'] = 'Customer ID '.$aValid['data']['customer_id'].' alread exists.';
+    return json_encode($aRet);
   }
 
   // Add the new customer
@@ -173,10 +174,13 @@ $app->post('/', function() use($app) {
   // Check if customer ID exists
   $aSQL = execSQL($app,"select count(*) as count from customers where customer_id = '".$aValid['data']['customer_id']."'");
   if (!$aSQL['status']){
-    return $aSQL['msg'];
+    return json_encode($aSQL);
   }
   if ($aSQL['data'][0]['count']<=0){
-    return 'Customer ID '.$aValid['data']['customer_id'].' does not exists.';
+    $aRet = array();
+    $aRet['status'] = false;
+    $aRet['msg'] = 'Customer ID '.$aValid['data']['customer_id'].' does not exists.';
+    return json_encode($aRet);
   }
 
   // update the customer data
@@ -206,10 +210,13 @@ $app->delete('/', function() use($app) {
   // Check if customer ID exists
   $aSQL = execSQL($app,"select count(*) as count from customers where customer_id = '".$decoded['customer_id']."'");
   if (!$aSQL['status']){
-    return $aSQL['msg'];
+    return json_encode($aSQL);
   }
   if ($aSQL['data'][0]['count']<=0){
-    return 'Customer ID '.$decoded['customer_id'].' does not exists.';
+    $aRet = array();
+    $aRet['status'] = false;
+    $aRet['msg'] = 'Customer ID '.$decoded['customer_id'].' does not exists.';
+    return json_encode($aRet);
   }
 
   // Delete customer
