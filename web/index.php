@@ -104,13 +104,16 @@ $app->get('/', function() use($app) {
 // Create
 $app->post('/create', function() use($app) {
 
+  // Get the raw
   $content = trim(file_get_contents("php://input"));
   $aValid = validaDados($content);
 
+  // Validate the data
   if (!$aValid['status']){    
     return $aValid['msg'];
   }
 
+  // Check if customer ID exists
   $aSQL = execSQL($app,"select count(*) as count from customers where customer_id = '".$aValid['data']['customer_id']."'");
   if (!$aSQL['status']){
     return $aSQL['msg'];
@@ -119,6 +122,7 @@ $app->post('/create', function() use($app) {
     return 'Customer ID '.$aValid['data']['customer_id'].' alread exists.';
   }
 
+  // Add the new customer
   $aSQL = execSQL($app,"insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
                                 values('".$aValid['data']['customer_id']."',
                                        '".$aValid['data']['company_name']."',
