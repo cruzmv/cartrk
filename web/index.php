@@ -76,14 +76,21 @@ function validaDados($content){
 
 function execSQL($app,$cSQL){
   $aRet['msg'] = '';
+echo '1';
   try{
+echo '2';
+
     $st = $app['pdo']->prepare($cSQL);
+echo '3';
+
     $st->execute();
   } catch (PDOException $exception) {
     $aRet['msg'] =  'PDOException: '.$exception;
   } catch (Exception $exception) {
     $aRet['msg'] =  'Exception: '.$exception;
   }
+echo '4';
+
   $aRet['status'] = empty($aRet['msg']);
 }
 
