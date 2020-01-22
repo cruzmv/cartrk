@@ -32,6 +32,56 @@ $app->register(new Csanquer\Silex\PdoServiceProvider\Provider\PDOServiceProvider
 $app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
+function validaDados($content){
+  
+  $cRet = 'OK';
+
+  $decoded = json_decode($content, true);
+  $customer_id   = $decoded['customer_id'];
+  $company_name  = $decoded['company_name'];
+  $contact_name  = $decoded['contact_name'];
+  $contact_title = $decoded['contact_title'];
+  $address       = $decoded['address'];
+  $city          = $decoded['city'];
+  $region        = $decoded['region'];
+  $postal_code   = $decoded['postal_code'];
+  $country       = $decoded['country'];
+  $phone         = $decoded['phone'];
+  $fax           = $decoded['fax'];
+  
+  if(strlen($company_name)<=0 || strlen($company_name) > 40){
+    $cRet = 'Company name can not be empty and has to be less or equal than 40 characters';
+  }
+  if(strlen($contact_name) > 30){
+    $cRet = 'Contact name has to be less or equal than 30 characters';
+  }
+  if(strlen($contact_title) > 30){
+    $cRet = 'Contact title has to be less or equal than 30 characters';
+  }
+  if(strlen($address) > 60){
+    $cRet = 'Address has to be less or equal than 60 characters';
+  }
+  if(strlen($city) > 15){
+    $cRet = 'City to be less or equal than 60 characters';
+  }
+  if(strlen($region) > 15){
+    $cRet = 'Region to be less or equal than 15 characters';
+  }
+  if(strlen($postal_code) > 10){
+    $cRet = 'Region to be less or equal than 10 characters';
+  }
+  if(strlen($country) > 15){
+    $cRet = 'Country to be less or equal than 15 characters';
+  }
+  if(strlen($phone) > 24){
+    $cRet = 'Phone to be less or equal than 24 characters';
+  }    
+  if(strlen($fax) > 24){
+    $cRet = 'Fax to be less or equal than 24 characters';
+  }
+  return $cRet;
+}
+
 // web handlers
 $app->get('/', function() use($app) {
   //$app['monolog']->addDebug('logging output.');
@@ -43,42 +93,32 @@ $app->get('/', function() use($app) {
 $app->post('/create', function() use($app) {
 
   $content = trim(file_get_contents("php://input"));
-  $decoded = json_decode($content, true);
-  
-  $customer_id   = $decoded['customer_id'];
-  $company_name  = $decoded['company_name'];
-  $contact_name  = $decoded['contact_name'];
-  $contact_title = $decoded['contact_title'];
-  $city          = $decoded['city'];
-  $region        = $decoded['region'];
-  $postal_code   = $decoded['postal_code'];
-  $country       = $decoded['country'];
-  $phone         = $decoded['phone'];
-  $fax           = $decoded['fax'];
-  
-  try{
-      $app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      $st = $app['pdo']->prepare("insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
-                                                values('".$customer_id."',
-                                                        '".$company_name."',
-                                                        '".$contact_name."',
-                                                        '".$contact_title."',
-                                                        '".$city."',
-                                                        '".$region."',
-                                                        '".$postal_code."',
-                                                        '".$country."',
-                                                        '".$phone."',
-                                                        '".$fax."') ");
-      $st->execute();
-  } catch (PDOException $exception) {
-      echo 'PDOException: '.$exception;
-  } catch (Exception $exception) {
-      echo 'Exception: '.$exception;
+  $cValid = validaDados($content);
+
+  if ($cValid == 'OK'){
+    try{
+        $app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $st = $app['pdo']->prepare("insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
+                                                  values('".$customer_id."',
+                                                          '".$company_name."',
+                                                          '".$contact_name."',
+                                                          '".$contact_title."',
+                                                          '".$city."',
+                                                          '".$region."',
+                                                          '".$postal_code."',
+                                                          '".$country."',
+                                                          '".$phone."',
+                                                          '".$fax."') ");
+        $st->execute();
+    } catch (PDOException $exception) {
+        echo 'PDOException: '.$exception;
+    } catch (Exception $exception) {
+        echo 'Exception: '.$exception;
+    }
+    return 'Customer add succefully';
+  } else {
+    return $cValid;
   }
-
-
-  return json_encode($decoded);
-
 });
 
 
