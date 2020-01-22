@@ -102,22 +102,20 @@ $app->post('/create', function() use($app) {
   $content = trim(file_get_contents("php://input"));
   $aValid = validaDados($content);
 
-  echo json_encode($aValid['data']['customer_id']);
-        
   if ($aValid['status']){    
     try{
         //$app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $st = $app['pdo']->prepare("insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
-                                                  values('".$aValid['customer_id']."',
-                                                          '".$aValid['company_name']."',
-                                                          '".$aValid['contact_name']."',
-                                                          '".$aValid['contact_title']."',
-                                                          '".$aValid['city']."',
-                                                          '".$aValid['region']."',
-                                                          '".$aValid['postal_code']."',
-                                                          '".$aValid['country']."',
-                                                          '".$aValid['phone']."',
-                                                          '".$aValid['fax']."') ");
+                                                   values('".$aValid['data']['customer_id']."',
+                                                          '".$aValid['data']['company_name']."',
+                                                          '".$aValid['data']['contact_name']."',
+                                                          '".$aValid['data']['contact_title']."',
+                                                          '".$aValid['data']['city']."',
+                                                          '".$aValid['data']['region']."',
+                                                          '".$aValid['data']['postal_code']."',
+                                                          '".$aValid['data']['country']."',
+                                                          '".$aValid['data']['phone']."',
+                                                          '".$aValid['data']['fax']."') ");
         $st->execute();
     } catch (PDOException $exception) {
         echo 'PDOException: '.$exception;
