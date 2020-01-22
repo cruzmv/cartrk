@@ -158,8 +158,6 @@ $app->get('/', function() use($app) {
   }
   $cSQL = $cSQL . ' order by contact_name ';
 
-echo $cSQL;
-
   $aSql = execSQL($app, $cSQL );
   if ( sizeof($aSql['data'])<=0  ){
     $aSql['status'] = false;
