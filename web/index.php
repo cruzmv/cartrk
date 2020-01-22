@@ -76,21 +76,15 @@ function validaDados($content){
 
 function execSQL($app,$cSQL){
   $aRet['msg'] = '';
-echo '1';
   try{
-echo '2';
-
     $st = $app['pdo']->prepare($cSQL);
-echo '3';
-
     $st->execute();
+    $aRet['sql'] = $st;
   } catch (PDOException $exception) {
     $aRet['msg'] =  'PDOException: '.$exception;
   } catch (Exception $exception) {
     $aRet['msg'] =  'Exception: '.$exception;
   }
-echo '4';
-
   $aRet['status'] = empty($aRet['msg']);
   return $aRet;
 }
@@ -103,54 +97,32 @@ $app->get('/', function() use($app) {
   return 'nada aqui';
 });
 
+
 // Create
 $app->post('/create', function() use($app) {
 
   $content = trim(file_get_contents("php://input"));
   $aValid = validaDados($content);
 
-  if ($aValid['status']){    
-    $aSQL = execSQL($app,"insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
-                                 values('".$aValid['data']['customer_id']."',
-                                        '".$aValid['data']['company_name']."',
-                                        '".$aValid['data']['contact_name']."',
-                                        '".$aValid['data']['contact_title']."',
-                                        '".$aValid['data']['city']."',
-                                        '".$aValid['data']['region']."',
-                                        '".$aValid['data']['postal_code']."',
-                                        '".$aValid['data']['country']."',
-                                        '".$aValid['data']['phone']."',
-                                        '".$aValid['data']['fax']."') ");
-
-    /*
-    try{
-        $st = $app['pdo']->prepare("insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
-                                                   values('".$aValid['data']['customer_id']."',
-                                                          '".$aValid['data']['company_name']."',
-                                                          '".$aValid['data']['contact_name']."',
-                                                          '".$aValid['data']['contact_title']."',
-                                                          '".$aValid['data']['city']."',
-                                                          '".$aValid['data']['region']."',
-                                                          '".$aValid['data']['postal_code']."',
-                                                          '".$aValid['data']['country']."',
-                                                          '".$aValid['data']['phone']."',
-                                                          '".$aValid['data']['fax']."') ");
-        $st->execute();
-    } catch (PDOException $exception) {
-        echo 'PDOException: '.$exception;
-    } catch (Exception $exception) {
-        echo 'Exception: '.$exception;
-    }
-    return 'Customer add succefully';
-    */
-
-    if (!$aSQL['status']){
-      return $aSQL['msg'];
-    }
-    return 'Customer add succefully';
-  } else {
+  if (!$aValid['status']){    
     return $aValid['msg'];
   }
+  $aSQL = execSQL($app,"insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
+                                values('".$aValid['data']['customer_id']."',
+                                       '".$aValid['data']['company_name']."',
+                                       '".$aValid['data']['contact_name']."',
+                                       '".$aValid['data']['contact_title']."',
+                                       '".$aValid['data']['city']."',
+                                       '".$aValid['data']['region']."',
+                                       '".$aValid['data']['postal_code']."',
+                                       '".$aValid['data']['country']."',
+                                       '".$aValid['data']['phone']."',
+                                       '".$aValid['data']['fax']."') ");
+  if (!$aSQL['status']){ 
+    return $aSQL['msg'];
+  }
+
+  return 'Customer add succefully';  
 });
 
 
@@ -160,15 +132,30 @@ $app->post('/create', function() use($app) {
 
 // Read
 $app->get('/read', function() use($app) {
-  $st = $app['pdo']->prepare('SELECT first_name FROM employees');
-  $st->execute();
 
-  $names = array();
-  while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
-    $app['monolog']->addDebug('Row ' . $row['first_name']);
-    $names[] = $row;
+  $aSql = execSQL($app,'select customer_id,
+                               company_name
+                               contact_name,
+                               contact_title,
+                               address,
+                               city,
+                               region,
+                               postal_code,
+                               country,
+                               phone,
+                               fax       
+                          from customers
+                         order by contact_name ');
+  if (!$aSql['status']){
+    return $aSql['msg'];
   }
 
+  $names = array();
+  while ($row = $aSql['sql']->fetch(PDO::FETCH_ASSOC)) {
+    $app['monolog']->addDebug('Row ' . $row['customer_id']);
+    $app['monolog']->addDebug('Row ' . $row['company_name']);
+    $names[] = $row;
+  }
   return json_encode($names);
 });
 
