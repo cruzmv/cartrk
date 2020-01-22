@@ -113,14 +113,18 @@ $app->post('/create', function() use($app) {
     return $aValid['msg'];
   }
 
+
+echo "select count(*) as count from customers where customer_id = '".$aValid['data']['customer_id']."'";
+
+
   // Check if customer ID exists
   $aSQL = execSQL($app,"select count(*) as count from customers where customer_id = '".$aValid['data']['customer_id']."'");
   if (!$aSQL['status']){
     return $aSQL['msg'];
   } 
 
-  echo $aSql['data']['count'];
-
+echo $aSql['data']['count'];
+/*
   if ($aSql['data']['count']>0){
     return 'Customer ID '.$aValid['data']['customer_id'].' alread exists.';
   }
@@ -140,8 +144,9 @@ $app->post('/create', function() use($app) {
   if (!$aSQL['status']){ 
     return $aSQL['msg'];
   }
-
+*/
   return 'Customer add succefully';  
+
 });
 
 
