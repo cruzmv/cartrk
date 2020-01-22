@@ -67,18 +67,14 @@ $app->post('/create', function() use($app) {
                                                         '".$country."',
                                                         '".$phone."',
                                                         '".$fax."') ");
-      $lRET = $st->execute();
-
-      if ($lRET == false){
-        echo 'erro ao executar a query';
-      }
+      $st->execute();
   } catch (PDOException $exception) {
       echo 'PDOException: '.$exception;
   } catch (Exception $exception) {
       echo 'Exception: '.$exception;
   }
 
-  return json_encode($app['pdo']);
+  return json_encode($decoded);
 
 });
 
