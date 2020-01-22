@@ -123,7 +123,7 @@ echo "select count(*) as count from customers where customer_id = '".$aValid['da
     return $aSQL['msg'];
   } 
 
-echo $aSQL['data'] ;
+echo  json_encode($aSQL)  ;
 
 
 
