@@ -118,6 +118,9 @@ $app->post('/create', function() use($app) {
   if (!$aSQL['status']){
     return $aSQL['msg'];
   } 
+
+  echo $aSql['data']['count'];
+
   if ($aSql['data']['count']>0){
     return 'Customer ID '.$aValid['data']['customer_id'].' alread exists.';
   }
@@ -160,7 +163,6 @@ $app->get('/read', function() use($app) {
   if (!$aSql['status']){
     return $aSql['msg'];
   }
-
   return json_encode($aSql['data']);
 });
 
