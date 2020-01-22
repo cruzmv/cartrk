@@ -138,7 +138,7 @@ $app->put('/', function() use($app) {
 
 // Read
 $app->get('/', function() use($app) {
-
+  header('Content-type:application/json;charset=utf-8');
   $content = trim(file_get_contents("php://input"));
   $decoded = json_decode($content, true);
   $cSQL = 'select customer_id,
