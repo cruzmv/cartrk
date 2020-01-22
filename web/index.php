@@ -65,11 +65,16 @@ $app->post('/create', function() use($app) {
                                                     '".$country."',
                                                     '".$phone."',
                                                     '".$fax."') ");
-  $st->execute();
 
-  echo json_encode($st);
+  try{
+    $st->execute();
+  } catch(PDOException $e){
+    echo $e.getMessage();
+  }
 
-  //return json_encode($decoded);
+  //echo json_encode($st);
+
+  return json_encode($decoded);
 });
 
 // Read
