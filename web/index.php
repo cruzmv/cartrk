@@ -51,22 +51,22 @@ function validaDados($content){
     $aRet['msg'] = 'Address has to be less or equal than 60 characters';
   }
   if(strlen($decoded['city']) > 15){
-    $aRet['msg'] = 'City to be less or equal than 60 characters';
+    $aRet['msg'] = 'City has to be less or equal than 60 characters';
   }
   if(strlen($decoded['region']) > 15){
-    $aRet['msg'] = 'Region to be less or equal than 15 characters';
+    $aRet['msg'] = 'Region has to be less or equal than 15 characters';
   }
   if(strlen($decoded['postal_code']) > 10){
-    $aRet['msg'] = 'Region to be less or equal than 10 characters';
+    $aRet['msg'] = 'Postal code has to be less or equal than 10 characters';
   }
   if(strlen($decoded['country']) > 15){
-    $aRet['msg'] = 'Country to be less or equal than 15 characters';
+    $aRet['msg'] = 'Country has to be less or equal than 15 characters';
   }
   if(strlen($decoded['phone']) > 24){
-    $aRet['msg'] = 'Phone to be less or equal than 24 characters';
+    $aRet['msg'] = 'Phone has to be less or equal than 24 characters';
   }    
   if(strlen($decoded['fax']) > 24){
-    $aRet['msg'] = 'Fax to be less or equal than 24 characters';
+    $aRet['msg'] = 'Fax has to be less or equal than 24 characters';
   }
 
   $aRet['status'] = empty($aRet['msg']);
