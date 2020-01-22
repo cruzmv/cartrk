@@ -118,7 +118,7 @@ $app->post('/create', function() use($app) {
   if (!$aSQL['status']){
     return $aSQL['msg'];
   } 
-  
+
 echo $aSQL['data'][0]['count'];
 
   if ($aSQL['data'][0]['count']>0){
@@ -140,7 +140,7 @@ echo $aSQL['data'][0]['count'];
   if (!$aSQL['status']){ 
     return $aSQL['msg'];
   }
-*/
+
   return 'Customer add succefully';  
 
 });
