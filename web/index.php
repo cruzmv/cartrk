@@ -113,17 +113,13 @@ $app->post('/create', function() use($app) {
     return $aValid['msg'];
   }
 
-
-echo "select count(*) as count from customers where customer_id = '".$aValid['data']['customer_id']."'";
-
-
   // Check if customer ID exists
   $aSQL = execSQL($app,"select count(*) as count from customers where customer_id = '".$aValid['data']['customer_id']."'");
   if (!$aSQL['status']){
     return $aSQL['msg'];
   } 
 
-echo $aSQL;  
+echo json_encode(aSQL['data']).' --> ';  
 echo json_encode($aSQL)  ;
 
 
