@@ -123,7 +123,10 @@ echo "select count(*) as count from customers where customer_id = '".$aValid['da
     return $aSQL['msg'];
   } 
 
-echo $aSql['data']['count'];
+echo $aSQL['data'] ;
+
+
+
 /*
   if ($aSql['data']['count']>0){
     return 'Customer ID '.$aValid['data']['customer_id'].' alread exists.';
