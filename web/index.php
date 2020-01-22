@@ -54,6 +54,21 @@ $app->post('/create', function() use($app) {
   $phone         = $decoded['phone'];
   $fax           = $decoded['fax'];
   
+  $lSql = execSQL("insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
+                                  values('".$customer_id."',
+                                          '".$company_name."',
+                                          '".$contact_name."',
+                                          '".$contact_title."',
+                                          '".$city."',
+                                          '".$region."',
+                                          '".$postal_code."',
+                                          '".$country."',
+                                          '".$phone."',
+                                          '".$fax."') ");
+  echo $lSql;
+
+
+  /*
   try{
       $app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       $st = $app['pdo']->prepare("insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
@@ -73,6 +88,7 @@ $app->post('/create', function() use($app) {
   } catch (Exception $exception) {
       echo 'Exception: '.$exception;
   }
+  */
 
   return json_encode($decoded);
 
@@ -121,3 +137,21 @@ $app->post('/delete', function() use($app) {
 
 
 $app->run();
+
+
+
+
+
+function execSQL($cSQL){
+  $lRet = false;
+  try{
+    $app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $st = $app['pdo']->prepare($cSQL); 
+    $lRet = $st->execute();
+  } catch (PDOException $exception) {
+      echo 'PDOException: '.$exception;
+  } catch (Exception $exception) {
+      echo 'Exception: '.$exception;
+  }
+  return $lRet;
+}
