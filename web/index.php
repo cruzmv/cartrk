@@ -80,9 +80,15 @@ function execSQL($app,$cSQL){
   try{
     $st = $app['pdo']->prepare($cSQL);
     $st->execute();
-    while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
-      $aRet['data'] = $row;
+
+    $names = array();
+    while ($row = $aSql['sql']->fetch(PDO::FETCH_ASSOC)) {
+      //$app['monolog']->addDebug('Row ' . $row['customer_id']);
+      $names[] = $row;
     }
+    $aRet['data'] = $names;
+
+
   } catch (PDOException $exception) {
     $aRet['msg'] =  'PDOException: '.$exception;
   } catch (Exception $exception) {
@@ -152,7 +158,8 @@ $app->get('/read', function() use($app) {
   if (!$aSql['status']){
     return $aSql['msg'];
   }
-  return json_encode($aSql['data'];
+
+  return json_encode($aSql['data']);
 
   /*
   $names = array();
