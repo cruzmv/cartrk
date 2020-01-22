@@ -1,13 +1,16 @@
 # Cartrack Challenge
 
 Heroku link: https://cartrk.herokuapp.com/
-    Create: PUT
-    Read:   GET
-    Update: POST
-    Delete: DELETE
+
+```sh
+    - Create: PUT
+    - Read:   GET
+    - Update: POST
+    - Delete: DELETE
+```
 
 # Json Example
-
+```sh
 {"customer_id": "0011",
  "company_name": "CompanyName",
  "contact_name": "ContactName",
@@ -20,7 +23,7 @@ Heroku link: https://cartrk.herokuapp.com/
  "phone": "Phone",
  "fax": "Fax"
 }
-
+```
 
 ## Heroku Documentation
 
