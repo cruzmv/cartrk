@@ -30,6 +30,11 @@ $app->register(new Csanquer\Silex\PdoServiceProvider\Provider\PDOServiceProvider
                )
 );
 
+
+function teste1(){
+  echo 'aqui!';
+}
+
 // web handlers
 $app->get('/', function() use($app) {
   //$app['monolog']->addDebug('logging output.');
@@ -109,6 +114,7 @@ $app->get('/read', function() use($app) {
     $app['monolog']->addDebug('Row ' . $row['first_name']);
     $names[] = $row;
   }
+  teste1();
   return json_encode($names);
 });
 
@@ -147,6 +153,8 @@ function execSQL($cSQL){
   }
   return $lRet;
 };
+
+
 
 $app->run();
 
