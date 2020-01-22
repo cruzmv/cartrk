@@ -31,7 +31,7 @@ $app->register(new Csanquer\Silex\PdoServiceProvider\Provider\PDOServiceProvider
 );
 $app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-
+//Validate de data
 function validaDados($content){
   
   $decoded = json_decode($content, true);
@@ -74,21 +74,16 @@ function validaDados($content){
   return $aRet;
 }
 
+// Execute a SQL statament
 function execSQL($app,$cSQL){
   $aRet['msg'] = '';
   $aRet['data'] = array();
   try{
     $st = $app['pdo']->prepare($cSQL);
     $st->execute();
-
-    //$names = array();
     while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
-      //$app['monolog']->addDebug('Row ' . $row['customer_id']);
       $aRet['data'][] = $row;
     }
-    //$aRet['data'] = $names;
-
-
   } catch (PDOException $exception) {
     $aRet['msg'] =  'PDOException: '.$exception;
   } catch (Exception $exception) {
@@ -97,7 +92,6 @@ function execSQL($app,$cSQL){
   $aRet['status'] = empty($aRet['msg']);
   return $aRet;
 }
-
 
 // web handlers
 $app->get('/', function() use($app) {
@@ -116,6 +110,15 @@ $app->post('/create', function() use($app) {
   if (!$aValid['status']){    
     return $aValid['msg'];
   }
+
+  $aSQL = execSQL($app,"select count(*) as count from customers where customer_id = '".$aValid['data']['customer_id']."'");
+  if (!$aSQL['status']){
+    return $aSQL['msg'];
+  } 
+  if ($aSql['data']['count']>0){
+    return 'Customer ID '.$aValid['data']['customer_id'].' alread exists.';
+  }
+
   $aSQL = execSQL($app,"insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
                                 values('".$aValid['data']['customer_id']."',
                                        '".$aValid['data']['company_name']."',
@@ -135,13 +138,8 @@ $app->post('/create', function() use($app) {
 });
 
 
-
-
-
-
 // Read
 $app->get('/read', function() use($app) {
-
   $aSql = execSQL($app,'select customer_id,
                                company_name
                                contact_name,
@@ -160,15 +158,6 @@ $app->get('/read', function() use($app) {
   }
 
   return json_encode($aSql['data']);
-
-  /*
-  $names = array();
-  while ($row = $aSql['sql']->fetch(PDO::FETCH_ASSOC)) {
-    //$app['monolog']->addDebug('Row ' . $row['customer_id']);
-    $names[] = $row;
-  }
-  return json_encode($names);
-  */
 });
 
 
