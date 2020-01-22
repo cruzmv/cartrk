@@ -67,7 +67,7 @@ $app->post('/create', function() use($app) {
                                                     '".$phone."',
                                                     '".$fax."') ");
     $st->execute();
-    echo $app['pdo']->errorInfo();
+    //echo $app['pdo']->errorInfo();
 
 
   //} catch(PDOException $e){
@@ -75,7 +75,9 @@ $app->post('/create', function() use($app) {
   //  $decoded = $e.getMessage();
   //}
 
-    return json_encode($decoded);
+    return json_encode($app['pdo']->errorInfo());
+    
+    //return json_encode($decoded);
 });
 
 // Read
