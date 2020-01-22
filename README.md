@@ -1,10 +1,10 @@
 # Cartrack Challenge
 
 Heroku link: https://cartrk.herokuapp.com/
-    Create: PUT
-    Read:   GET
-    Update: POST
-    Delete: DELETE
+    - Create: PUT
+    - Read:   GET
+    - Update: POST
+    - Delete: DELETE
 
 # Json Example
 ```sh
