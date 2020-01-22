@@ -102,24 +102,20 @@ $app->post('/create', function() use($app) {
   $content = trim(file_get_contents("php://input"));
   $aValid = validaDados($content);
 
-  if ($aValid['status']){
-    /*
-    $aSql = execSQL($app,"insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
-                                        values('".$customer_id."',
-                                                '".$company_name."',
-                                                '".$contact_name."',
-                                                '".$contact_title."',
-                                                '".$city."',
-                                                '".$region."',
-                                                '".$postal_code."',
-                                                '".$country."',
-                                                '".$phone."',
-                                                '".$fax."') ");
-    if($aSql['status']){
-      return 'Customer add succefully';
-    }
-    */
-    
+  echo "insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
+  values('".$aValid['customer_id']."',
+          '".$aValid['company_name']."',
+          '".$aValid['contact_name']."',
+          '".$aValid['contact_title']."',
+          '".$aValid['city']."',
+          '".$aValid['region']."',
+          '".$aValid['postal_code']."',
+          '".$aValid['country']."',
+          '".$aValid['phone']."',
+          '".$aValid['fax']."') ";
+        
+        
+  if ($aValid['status']){    
     try{
         //$app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $st = $app['pdo']->prepare("insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
