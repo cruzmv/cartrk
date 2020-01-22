@@ -126,11 +126,11 @@ $app->post('/create', function() use($app) {
   }
 
   // Add the new customer
-  $aSQL = execSQL($app,"insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
+  $aSQL = execSQL($app,"insert into customers(customer_id,company_name,contact_name,contact_title,address,city,region,postal_code,country,phone,fax) 
                                 values('".$aValid['data']['customer_id']."',
                                        '".$aValid['data']['company_name']."',
                                        '".$aValid['data']['contact_name']."',
-                                       '".$aValid['data']['contact_title']."',
+                                       '".$aValid['data']['address']."',
                                        '".$aValid['data']['city']."',
                                        '".$aValid['data']['region']."',
                                        '".$aValid['data']['postal_code']."',
