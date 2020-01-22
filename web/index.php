@@ -130,6 +130,7 @@ $app->post('/create', function() use($app) {
                                 values('".$aValid['data']['customer_id']."',
                                        '".$aValid['data']['company_name']."',
                                        '".$aValid['data']['contact_name']."',
+                                       '".$aValid['data']['contact_title']."',
                                        '".$aValid['data']['address']."',
                                        '".$aValid['data']['city']."',
                                        '".$aValid['data']['region']."',
