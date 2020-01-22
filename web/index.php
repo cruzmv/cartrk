@@ -74,6 +74,21 @@ function validaDados($content){
   return $aRet;
 }
 
+function execSQL($app,$cSQL){
+  $aRet['msg'] = '';
+  try{
+    //$app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $st = $app['pdo']->prepare($cSQL);
+    $st->execute();
+  } catch (PDOException $exception) {
+    $aRet['msg'] =  'PDOException: '.$exception;
+  } catch (Exception $exception) {
+    $aRet['msg'] =  'Exception: '.$exception;
+  }
+  $aRet['status'] = empty($aRet['msg']);
+}
+
+
 // web handlers
 $app->get('/', function() use($app) {
   //$app['monolog']->addDebug('logging output.');
@@ -88,6 +103,21 @@ $app->post('/create', function() use($app) {
   $aValid = validaDados($content);
 
   if ($aValid['status']){
+    $aSql = execSQL($app,"insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
+                                        values('".$customer_id."',
+                                                '".$company_name."',
+                                                '".$contact_name."',
+                                                '".$contact_title."',
+                                                '".$city."',
+                                                '".$region."',
+                                                '".$postal_code."',
+                                                '".$country."',
+                                                '".$phone."',
+                                                '".$fax."') ");
+    if($aSql['status']){
+      return 'Customer add succefully';
+    }
+    /*
     try{
         //$app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $st = $app['pdo']->prepare("insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
@@ -108,6 +138,7 @@ $app->post('/create', function() use($app) {
         echo 'Exception: '.$exception;
     }
     return 'Customer add succefully';
+    */
   } else {
     return $aValid['msg'];
   }
