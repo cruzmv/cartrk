@@ -76,10 +76,13 @@ function validaDados($content){
 
 function execSQL($app,$cSQL){
   $aRet['msg'] = '';
+  $aRet['data'] = array();
   try{
     $st = $app['pdo']->prepare($cSQL);
     $st->execute();
-    $aRet['sql'] = $st;
+    while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
+      $aRet['data'] = $row;
+    }
   } catch (PDOException $exception) {
     $aRet['msg'] =  'PDOException: '.$exception;
   } catch (Exception $exception) {
@@ -149,13 +152,16 @@ $app->get('/read', function() use($app) {
   if (!$aSql['status']){
     return $aSql['msg'];
   }
+  return json_encode($aSql['data'];
 
+  /*
   $names = array();
   while ($row = $aSql['sql']->fetch(PDO::FETCH_ASSOC)) {
     //$app['monolog']->addDebug('Row ' . $row['customer_id']);
     $names[] = $row;
   }
   return json_encode($names);
+  */
 });
 
 
