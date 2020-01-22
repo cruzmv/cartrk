@@ -33,14 +33,21 @@ $app->register(new Csanquer\Silex\PdoServiceProvider\Provider\PDOServiceProvider
 
 function execSQL($cSQL){
   try{
+echo '1';    
     $app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+echo '2';
     $st = $app['pdo']->prepare($cSQL); 
+echo '3';    
     $st->execute();
+echo '4';    
+
   } catch (PDOException $exception) {
       echo 'PDOException: '.$exception;
   } catch (Exception $exception) {
       echo 'Exception: '.$exception;
   }
+echo '5';    
+
 };
 
 
@@ -71,7 +78,7 @@ $app->post('/create', function() use($app) {
   $phone         = $decoded['phone'];
   $fax           = $decoded['fax'];
   
-  $lSql = execSQL("insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
+  execSQL("insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
                                   values('".$customer_id."',
                                           '".$company_name."',
                                           '".$contact_name."',
@@ -82,7 +89,7 @@ $app->post('/create', function() use($app) {
                                           '".$country."',
                                           '".$phone."',
                                           '".$fax."') ");
-  echo $lSql;
+  //echo $lSql;
 
 
   /*
