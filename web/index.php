@@ -74,7 +74,8 @@ $app->post('/create', function() use($app) {
     //echo $e.getMessage();
   //  $decoded = $e.getMessage();
   //}
-    return json_encode($st);
+    //return json_encode($st);
+    return json_encode($app['pdo']);
 
     //return json_encode($app['pdo']->errorInfo());
     //return json_encode($decoded);
