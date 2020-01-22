@@ -31,13 +31,16 @@ $app->register(new Csanquer\Silex\PdoServiceProvider\Provider\PDOServiceProvider
 );
 $app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-//Validate de data
+//Validate the data
 function validaDados($content){
   
   $decoded = json_decode($content, true);
   $aRet['msg'] = '';
   $aRet['data'] = $decoded;
-  
+
+  if( empty($decoded['customer_id']) ){
+    $aRet['msg'] = 'Please informar a customer ID';
+  }
   if(strlen($decoded['company_name'])<=0 || strlen($decoded['company_name']) > 40){
     $aRet['msg'] = 'Company name can not be empty and has to be less or equal than 40 characters';
   }
@@ -205,8 +208,26 @@ $app->post('/update', function() use($app) {
 $app->post('/delete', function() use($app) {
   $content = trim(file_get_contents("php://input"));
   $decoded = json_decode($content, true);
+  if(empty($decoded['customer_id']) ){
+    $aRet['msg'] = 'Please informar a customer ID';
+  }
+
+  // Check if customer ID exists
+  $aSQL = execSQL($app,"select count(*) as count from customers where customer_id = '".$decoded['customer_id']."'");
+  if (!$aSQL['status']){
+    return $aSQL['msg'];
+  } 
+  if ($aSQL['data'][0]['count']<=0){
+    return 'Customer ID '.$decoded['customer_id'].' does not exists.';
+  }
+
+  // Delete the customer
+  $aSQL = execSQL($app,"delete from customers where customer_id = '".$decoded['customer_id']."'");
+  if (!$aSQL['status']){
+    return $aSQL['msg'];
+  } 
   
-  return json_encode($decoded);
+  return 'Customer delete succefully';
 });
 
 
