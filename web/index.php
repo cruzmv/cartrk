@@ -96,7 +96,7 @@ function execSQL($app,$cSQL){
   return $aRet;
 }
 
-// web handlers
+// Create
 $app->put('/', function() use($app) {
   //$app['monolog']->addDebug('logging output.');
   //return $app['twig']->render('index.twig');
@@ -139,7 +139,7 @@ $app->put('/', function() use($app) {
 });
 
 
-// Create
+/* Create
 $app->post('/create', function() use($app) {
 
   // Get the raw
@@ -180,7 +180,7 @@ $app->post('/create', function() use($app) {
   return 'Customer add succefully';  
 
 });
-
+*/
 
 // Read
 $app->get('/read', function() use($app) {
@@ -205,7 +205,7 @@ $app->get('/read', function() use($app) {
 
 
 // Update
-$app->post('/update', function() use($app) {
+$app->post('/', function() use($app) {
   
   $content = trim(file_get_contents("php://input"));
   $aValid = validaDados($content);
