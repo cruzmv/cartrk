@@ -12,9 +12,9 @@ $app->register(new Silex\Provider\MonologServiceProvider(), array(
 ));
 
 // Register view rendering
-//$app->register(new Silex\Provider\TwigServiceProvider(), array(
-//    'twig.path' => __DIR__.'/views',
-//));
+$app->register(new Silex\Provider\TwigServiceProvider(), array(
+    'twig.path' => __DIR__.'/views',
+));
 
 $dbopts = parse_url(getenv('DATABASE_URL2'));
 $app->register(new Csanquer\Silex\PdoServiceProvider\Provider\PDOServiceProvider('pdo'),
@@ -138,7 +138,7 @@ $app->put('/', function() use($app) {
 
 // Read
 $app->get('/', function() use($app) {
-  header('Content-type:application/json;charset=utf-8');
+
   $content = trim(file_get_contents("php://input"));
   $decoded = json_decode($content, true);
   $cSQL = 'select customer_id,
@@ -162,7 +162,7 @@ $app->get('/', function() use($app) {
   if ( sizeof($aSql['data'])<=0  ){
     $aSql['status'] = false;
   }
-  header('Content-type:application/json;charset=utf-8');
+
   return json_encode($aSql);
 });
 
