@@ -53,8 +53,9 @@ $app->post('/create', function() use($app) {
   $country       = $decoded['country'];
   $phone         = $decoded['phone'];
   $fax           = $decoded['fax'];
+  try{
 
-  $st = $app['pdo']->prepare("insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
+    $st = $app['pdo']->prepare("insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
                                              values('".$customer_id."',
                                                     '".$company_name."',
                                                     '".$contact_name."',
@@ -65,8 +66,6 @@ $app->post('/create', function() use($app) {
                                                     '".$country."',
                                                     '".$phone."',
                                                     '".$fax."') ");
-
-  try{
     $st->execute();
   } catch(PDOException $e){
     //echo $e.getMessage();
