@@ -158,8 +158,8 @@ $app->get('/', function() use($app) {
   }
   $cSQL = $cSQL . 'order by contact_name ';
   $aSql = execSQL($app, $cSQL );
-  if (!$aSql['status']){
-    return $aSql['msg'];
+  if ( sizeof($aSql['data'])<=0  ){
+    $aSql['status'] = false;
   }
 
   return json_encode($aSql);
