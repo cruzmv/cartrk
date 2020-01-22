@@ -103,6 +103,7 @@ $app->post('/create', function() use($app) {
   $aValid = validaDados($content);
 
   if ($aValid['status']){
+    /*
     $aSql = execSQL($app,"insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
                                         values('".$customer_id."',
                                                 '".$company_name."',
@@ -117,7 +118,8 @@ $app->post('/create', function() use($app) {
     if($aSql['status']){
       return 'Customer add succefully';
     }
-    /*
+    */
+    
     try{
         //$app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $st = $app['pdo']->prepare("insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
@@ -138,7 +140,7 @@ $app->post('/create', function() use($app) {
         echo 'Exception: '.$exception;
     }
     return 'Customer add succefully';
-    */
+    
   } else {
     return $aValid['msg'];
   }
