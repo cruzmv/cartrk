@@ -1,4 +1,25 @@
-# php-getting-started
+# Cartrack Challenge
+
+Heroku link: https://cartrk.herokuapp.com/
+    Create: PUT
+    Read:   GET
+    Update: POST
+    Delete: DELETE
+
+# Json Example
+
+{"customer_id": "0011",
+ "company_name": "CompanyName",
+ "contact_name": "ContactName",
+ "contact_title": "ContactTitle",
+ "address": "Address",
+ "city": "City",
+ "region": "Region",
+ "postal_code": "PCode",
+ "country": "Country",
+ "phone": "Phone",
+ "fax": "Fax"
+}
 
 A barebones PHP app that makes use of the [Silex](http://silex.sensiolabs.org/) web framework, which can easily be deployed to Heroku.
 
