@@ -31,9 +31,23 @@ $app->register(new Csanquer\Silex\PdoServiceProvider\Provider\PDOServiceProvider
 );
 
 
-function teste1(){
-  echo 'aqui!';
-}
+function execSQL($cSQL){
+  $lRet = false;
+  try{
+    $app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $st = $app['pdo']->prepare($cSQL); 
+    $lRet = $st->execute();
+  } catch (PDOException $exception) {
+      echo 'PDOException: '.$exception;
+  } catch (Exception $exception) {
+      echo 'Exception: '.$exception;
+  }
+  return $lRet;
+};
+
+
+
+
 
 // web handlers
 $app->get('/', function() use($app) {
@@ -114,7 +128,7 @@ $app->get('/read', function() use($app) {
     $app['monolog']->addDebug('Row ' . $row['first_name']);
     $names[] = $row;
   }
-  teste1();
+
   return json_encode($names);
 });
 
@@ -138,22 +152,6 @@ $app->post('/delete', function() use($app) {
   
   return json_encode($decoded);
 });
-
-
-function execSQL($cSQL){
-  $lRet = false;
-  try{
-    $app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $st = $app['pdo']->prepare($cSQL); 
-    $lRet = $st->execute();
-  } catch (PDOException $exception) {
-      echo 'PDOException: '.$exception;
-  } catch (Exception $exception) {
-      echo 'Exception: '.$exception;
-  }
-  return $lRet;
-};
-
 
 
 $app->run();
