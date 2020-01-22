@@ -69,10 +69,9 @@ $app->post('/create', function() use($app) {
   try{
     $st->execute();
   } catch(PDOException $e){
-    echo $e.getMessage();
+    //echo $e.getMessage();
+    $decoded = $e.getMessage();
   }
-
-  //echo json_encode($st);
 
   return json_encode($decoded);
 });
