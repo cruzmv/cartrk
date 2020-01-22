@@ -89,7 +89,7 @@ $app->post('/create', function() use($app) {
 
   if ($aValid['status']){
     try{
-        $app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        //$app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $st = $app['pdo']->prepare("insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
                                                   values('".$customer_id."',
                                                           '".$company_name."',
