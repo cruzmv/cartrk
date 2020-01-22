@@ -53,21 +53,8 @@ $app->post('/create', function() use($app) {
   $country       = $decoded['country'];
   $phone         = $decoded['phone'];
   $fax           = $decoded['fax'];
-  //try{
-
-
-echo "insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
-values('".$customer_id."',
-       '".$company_name."',
-       '".$contact_name."',
-       '".$contact_title."',
-       '".$city."',
-       '".$region."',
-       '".$postal_code."',
-       '".$country."',
-       '".$phone."',
-       '".$fax."') ";
-
+  try{
+    $app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $st = $app['pdo']->prepare("insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
                                              values('".$customer_id."',
                                                     '".$company_name."',
@@ -81,17 +68,15 @@ values('".$customer_id."',
                                                     '".$fax."') ");
     $st->execute();
     //echo $app['pdo']->errorInfo();
-
-
-  //} catch(PDOException $e){
-    //echo $e.getMessage();
-  //  $decoded = $e.getMessage();
-  //}
+  } catch(PDOException $e){
+    echo $e.getMessage();
+    //$decoded = $e.getMessage();
+  }
     //return json_encode($st);
-    return json_encode($app['pdo']);
+    //return json_encode($app['pdo']);
 
     //return json_encode($app['pdo']->errorInfo());
-    //return json_encode($decoded);
+    return json_encode($decoded);
 });
 
 // Read
