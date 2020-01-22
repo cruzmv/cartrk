@@ -102,6 +102,7 @@ $app->post('/create', function() use($app) {
   $content = trim(file_get_contents("php://input"));
   $aValid = validaDados($content);
 
+  echo json_encode($aValid);
   echo "insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
   values('".$aValid['customer_id']."',
           '".$aValid['company_name']."',
