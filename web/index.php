@@ -92,6 +92,7 @@ echo '3';
 echo '4';
 
   $aRet['status'] = empty($aRet['msg']);
+  return $aRet;
 }
 
 
