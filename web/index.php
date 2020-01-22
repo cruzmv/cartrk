@@ -154,9 +154,9 @@ $app->get('/', function() use($app) {
                   fax
              from customers';
   if(!empty($decoded['customer_id'])){
-    $cSQL=$cSQL." where customer_id = '".$decoded['customer_id']."' ";
+    $cSQL=$cSQL." where customer_id = '".$decoded['customer_id']."'";
   }
-  $cSQL = $cSQL . 'order by contact_name ';
+  $cSQL = $cSQL . ' order by contact_name ';
 
 echo $cSQL;
 
