@@ -29,12 +29,13 @@ $app->register(new Csanquer\Silex\PdoServiceProvider\Provider\PDOServiceProvider
                    )
                )
 );
+$app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
 function execSQL($cSQL){
   try{
 echo '1';    
-    $app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
 echo '2';
     $st = $app['pdo']->prepare($cSQL); 
 echo '3';    
