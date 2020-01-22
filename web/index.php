@@ -82,7 +82,7 @@ function execSQL($app,$cSQL){
     $st = $app['pdo']->prepare($cSQL);
     $st->execute();
     while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
-      $aRet['data'][] = $row;
+      $aRet['data'] = $row;
     }
   } catch (PDOException $exception) {
     $aRet['msg'] =  'PDOException: '.$exception;
@@ -119,7 +119,7 @@ $app->post('/create', function() use($app) {
     return $aSQL['msg'];
   } 
 
-echo json_encode($aSQL['data'][['count']]).' --> ';  
+echo json_encode($aSQL['data']['count']).' --> ';  
 echo json_encode($aSQL)  ;
 
 
