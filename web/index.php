@@ -81,12 +81,12 @@ function execSQL($app,$cSQL){
     $st = $app['pdo']->prepare($cSQL);
     $st->execute();
 
-    $names = array();
+    //$names = array();
     while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
       //$app['monolog']->addDebug('Row ' . $row['customer_id']);
-      $names[] = $row;
+      $aRet['data'][] = $row;
     }
-    $aRet['data'] = $names;
+    //$aRet['data'] = $names;
 
 
   } catch (PDOException $exception) {
