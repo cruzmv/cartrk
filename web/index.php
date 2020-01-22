@@ -77,7 +77,6 @@ function validaDados($content){
 function execSQL($app,$cSQL){
   $aRet['msg'] = '';
   try{
-    //$app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $st = $app['pdo']->prepare($cSQL);
     $st->execute();
   } catch (PDOException $exception) {
@@ -103,8 +102,20 @@ $app->post('/create', function() use($app) {
   $aValid = validaDados($content);
 
   if ($aValid['status']){    
+    $aSQL = execSQL($app,"insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
+                                 values('".$aValid['data']['customer_id']."',
+                                        '".$aValid['data']['company_name']."',
+                                        '".$aValid['data']['contact_name']."',
+                                        '".$aValid['data']['contact_title']."',
+                                        '".$aValid['data']['city']."',
+                                        '".$aValid['data']['region']."',
+                                        '".$aValid['data']['postal_code']."',
+                                        '".$aValid['data']['country']."',
+                                        '".$aValid['data']['phone']."',
+                                        '".$aValid['data']['fax']."') ");
+
+    /*
     try{
-        //$app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $st = $app['pdo']->prepare("insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
                                                    values('".$aValid['data']['customer_id']."',
                                                           '".$aValid['data']['company_name']."',
@@ -123,7 +134,12 @@ $app->post('/create', function() use($app) {
         echo 'Exception: '.$exception;
     }
     return 'Customer add succefully';
-    
+    */
+
+    if (!$aSQL['status']){
+      return $aSQL['msg'];
+    }
+    return 'Customer add succefully';
   } else {
     return $aValid['msg'];
   }
