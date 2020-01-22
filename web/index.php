@@ -152,8 +152,7 @@ $app->get('/read', function() use($app) {
 
   $names = array();
   while ($row = $aSql['sql']->fetch(PDO::FETCH_ASSOC)) {
-    $app['monolog']->addDebug('Row ' . $row['customer_id']);
-    $app['monolog']->addDebug('Row ' . $row['company_name']);
+    //$app['monolog']->addDebug('Row ' . $row['customer_id']);
     $names[] = $row;
   }
   return json_encode($names);
