@@ -55,6 +55,7 @@ $app->post('/create', function() use($app) {
   $fax           = $decoded['fax'];
   
   try{
+      $app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       $st = $app['pdo']->prepare("insert into customers(customer_id,company_name,contact_name,contact_title,city  ,region  , postal_code,country  ,phone, fax  ) 
                                                 values('".$customer_id."',
                                                         '".$company_name."',
@@ -67,16 +68,24 @@ $app->post('/create', function() use($app) {
                                                         '".$phone."',
                                                         '".$fax."') ");
       $lRET = $st->execute();
+
+      if ($lRET == false){
+        echo 'erro ao executar a query';
+      }
   } catch (PDOException $exception) {
       echo 'PDOException: '.$exception;
   } catch (Exception $exception) {
       echo 'Exception: '.$exception;
   }
-  echo json_encode($lRET);
 
   return json_encode($app['pdo']);
-  
+
 });
+
+
+
+
+
 
 // Read
 $app->get('/read', function() use($app) {
