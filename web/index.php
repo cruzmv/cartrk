@@ -140,6 +140,10 @@ $app->put('/', function() use($app) {
 
 // Read
 $app->get('/', function() use($app) {
+
+  $content = trim(file_get_contents("php://input"));
+  $decoded = json_decode($content, true);
+  
   $aSql = execSQL($app,'select customer_id,
                                company_name
                                contact_name,
@@ -151,8 +155,9 @@ $app->get('/', function() use($app) {
                                country,
                                phone,
                                fax       
-                          from customers
-                         order by contact_name ');
+                          from customers '.
+                          (empty($decoded['customer_id']) )?'':"where customer_id = '".$decoded['customer_id']."' ".
+                         'order by contact_name ');
   if (!$aSql['status']){
     return $aSql['msg'];
   }
