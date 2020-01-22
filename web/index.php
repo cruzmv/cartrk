@@ -118,15 +118,7 @@ $app->post('/create', function() use($app) {
   if (!$aSQL['status']){
     return $aSQL['msg'];
   } 
-
-echo $aSQL['data'][0]['count'].' --> ';
-//echo json_encode($aSQL['data'][0]['count']).' --> ';  
-//echo json_encode($aSQL)  ;
-
-
-
-/*
-  if ($aSql['data']['count']>0){
+  if ($aSQL['data'][0]['count']>0){
     return 'Customer ID '.$aValid['data']['customer_id'].' alread exists.';
   }
 
