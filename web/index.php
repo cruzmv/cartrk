@@ -82,7 +82,7 @@ function execSQL($app,$cSQL){
     $st->execute();
 
     $names = array();
-    while ($row = $aSql['sql']->fetch(PDO::FETCH_ASSOC)) {
+    while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
       //$app['monolog']->addDebug('Row ' . $row['customer_id']);
       $names[] = $row;
     }
