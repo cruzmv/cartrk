@@ -33,7 +33,7 @@ $app['pdo']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 //Validate the data
 function validaDados($content){
-  
+
   $decoded = json_decode($content, true);
   $aRet['msg'] = '';
   $aRet['data'] = $decoded;
@@ -67,7 +67,7 @@ function validaDados($content){
   }
   if(strlen($decoded['phone']) > 24){
     $aRet['msg'] = 'Phone has to be less or equal than 24 characters';
-  }    
+  }
   if(strlen($decoded['fax']) > 24){
     $aRet['msg'] = 'Fax has to be less or equal than 24 characters';
   }
@@ -98,14 +98,15 @@ function execSQL($app,$cSQL){
 
 // Create
 $app->put('/', function() use($app) {
-  //$app['monolog']->addDebug('logging output.');
-  //return $app['twig']->render('index.twig');
+
+  $aRet = array();
+
   // Get the raw
   $content = trim(file_get_contents("php://input"));
-  $aValid = validaDados($content);
 
   // Validate the data
-  if (!$aValid['status']){    
+  $aValid = validaDados($content);
+  if (!$aValid['status']){
     return $aValid['msg'];
   }
 
@@ -113,13 +114,13 @@ $app->put('/', function() use($app) {
   $aSQL = execSQL($app,"select count(*) as count from customers where customer_id = '".$aValid['data']['customer_id']."'");
   if (!$aSQL['status']){
     return $aSQL['msg'];
-  } 
+  }
   if ($aSQL['data'][0]['count']>0){
     return 'Customer ID '.$aValid['data']['customer_id'].' alread exists.';
   }
 
   // Add the new customer
-  $aSQL = execSQL($app,"insert into customers(customer_id,company_name,contact_name,contact_title,address,city,region,postal_code,country,phone,fax) 
+  $aSQL = execSQL($app,"insert into customers(customer_id,company_name,contact_name,contact_title,address,city,region,postal_code,country,phone,fax)
                                 values('".$aValid['data']['customer_id']."',
                                        '".$aValid['data']['company_name']."',
                                        '".$aValid['data']['contact_name']."',
@@ -131,11 +132,7 @@ $app->put('/', function() use($app) {
                                        '".$aValid['data']['country']."',
                                        '".$aValid['data']['phone']."',
                                        '".$aValid['data']['fax']."') ");
-  if (!$aSQL['status']){ 
-    return $aSQL['msg'];
-  }
-
-  return 'Customer add succefully';  
+  return json_encode($aSQL);
 });
 
 // Read
@@ -153,7 +150,7 @@ $app->get('/', function() use($app) {
                   postal_code,
                   country,
                   phone,
-                  fax       
+                  fax
              from customers';
   if(!empty($decoded['customer_id'])){
     $cSQL=$cSQL." where customer_id = '".$decoded['customer_id']."' ";
@@ -163,12 +160,13 @@ $app->get('/', function() use($app) {
   if (!$aSql['status']){
     return $aSql['msg'];
   }
+
   return json_encode($aSql['data']);
 });
 
 // Update
 $app->post('/', function() use($app) {
-  
+
   $content = trim(file_get_contents("php://input"));
   $aValid = validaDados($content);
 
@@ -176,13 +174,13 @@ $app->post('/', function() use($app) {
   $aSQL = execSQL($app,"select count(*) as count from customers where customer_id = '".$aValid['data']['customer_id']."'");
   if (!$aSQL['status']){
     return $aSQL['msg'];
-  } 
+  }
   if ($aSQL['data'][0]['count']<=0){
     return 'Customer ID '.$aValid['data']['customer_id'].' does not exists.';
   }
-  
+
   // update the customer data
-  $aSQL = execSQL($app,"update customers 
+  $aSQL = execSQL($app,"update customers
                            set company_name = '".$aValid['data']['company_name']."',
                                contact_name = '".$aValid['data']['contact_name']."',
                                contact_title = '".$aValid['data']['contact_title']."',
@@ -192,13 +190,9 @@ $app->post('/', function() use($app) {
                                postal_code = '".$aValid['data']['postal_code']."',
                                country = '".$aValid['data']['country']."',
                                phone = '".$aValid['data']['phone']."',
-                               fax = '".$aValid['data']['fax']."' 
+                               fax = '".$aValid['data']['fax']."'
                         where customer_id = '".$aValid['data']['customer_id']."'");
-  if (!$aSQL['status']){
-    return $aSQL['msg'];
-  } 
-  
-  return 'Customer update succefully.'; 
+  return json_encode($aSQL);
 });
 
 // Delete
@@ -213,18 +207,15 @@ $app->delete('/', function() use($app) {
   $aSQL = execSQL($app,"select count(*) as count from customers where customer_id = '".$decoded['customer_id']."'");
   if (!$aSQL['status']){
     return $aSQL['msg'];
-  } 
+  }
   if ($aSQL['data'][0]['count']<=0){
     return 'Customer ID '.$decoded['customer_id'].' does not exists.';
   }
 
-  // Delete the customer
+  // Delete customer
   $aSQL = execSQL($app,"delete from customers where customer_id = '".$decoded['customer_id']."'");
-  if (!$aSQL['status']){
-    return $aSQL['msg'];
-  } 
-  
-  return 'Customer delete succefully';
+
+  return json_encode($aSQL);
 });
 
 
