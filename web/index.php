@@ -162,7 +162,7 @@ $app->get('/', function() use($app) {
   if ( sizeof($aSql['data'])<=0  ){
     $aSql['status'] = false;
   }
-
+  header('Content-type:application/json;charset=utf-8');
   return json_encode($aSql);
 });
 
