@@ -143,21 +143,23 @@ $app->get('/', function() use($app) {
 
   $content = trim(file_get_contents("php://input"));
   $decoded = json_decode($content, true);
-  
-  $aSql = execSQL($app,'select customer_id,
-                               company_name
-                               contact_name,
-                               contact_title,
-                               address,
-                               city,
-                               region,
-                               postal_code,
-                               country,
-                               phone,
-                               fax       
-                          from customers '.
-                          (empty($decoded['customer_id']) )?'':"where customer_id = '".$decoded['customer_id']."' ".
-                         'order by contact_name ');
+  $cSQL = 'select customer_id,
+                  company_name
+                  contact_name,
+                  contact_title,
+                  address,
+                  city,
+                  region,
+                  postal_code,
+                  country,
+                  phone,
+                  fax       
+             from customers';
+  if(!empty($decoded['customer_id'])){
+    $cSQL=$cSQL." where customer_id = '".$decoded['customer_id']."' ";
+  }
+  $cSQL = $cSQL . 'order by contact_name ';
+  $aSql = execSQL($app, $cSQL );
   if (!$aSql['status']){
     return $aSql['msg'];
   }
