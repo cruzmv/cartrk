@@ -162,7 +162,7 @@ $app->get('/', function() use($app) {
     return $aSql['msg'];
   }
 
-  return json_encode($aSql['data']);
+  return json_encode($aSql);
 });
 
 // Update
